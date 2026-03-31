@@ -37,7 +37,7 @@ export class Keyboard {
     this.pendingKeys = new Set();
     this.stickyKeys = new Set();
 
-    if (autobind) {
+    if (autobind && typeof window !== 'undefined') {
       this._keydown = (event: KeyboardEvent) => this.keydown(event);
       this._keyup = (event: KeyboardEvent) => this.keyup(event);
       window.addEventListener('keydown', this._keydown);
@@ -56,10 +56,10 @@ export class Keyboard {
    * Stop listening to "keydown" and "keyup" events if constructed with `autobind = true`.
    */
   dispose() {
-    if (this._keydown) {
+    if (typeof window !== 'undefined' && this._keydown) {
       window.removeEventListener('keydown', this._keydown);
     }
-    if (this._keyup) {
+    if (typeof window !== 'undefined' && this._keyup) {
       window.removeEventListener('keyup', this._keyup);
     }
   }

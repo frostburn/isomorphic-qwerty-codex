@@ -84,4 +84,8 @@ describe('Isomoprhic QWERTY keyboard', () => {
     expect(() => keyboard.keydown(frozenEvent)).not.toThrow();
     expect(keydownSpy).toBeCalledWith({code: 'KeyA', coordinates: [0, 2, 1]});
   });
+
+  it('can be constructed with autobind in non-browser environments', () => {
+    expect(() => new Keyboard(true)).not.toThrow();
+  });
 });
