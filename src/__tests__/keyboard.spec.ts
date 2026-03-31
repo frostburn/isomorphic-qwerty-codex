@@ -74,4 +74,14 @@ describe('Isomoprhic QWERTY keyboard', () => {
     expect(knownListener).toBeCalledTimes(1);
     expect(unknownListener).toBeCalledTimes(0);
   });
+
+  it('handles non-extensible keyboard event objects', () => {
+    const keyboard = new Keyboard();
+    const keydownSpy = vi.fn(() => vi.fn());
+    keyboard.addKeydownListener(keydownSpy);
+
+    const frozenEvent = Object.freeze({code: 'KeyA'}) as KeyboardEvent;
+    expect(() => keyboard.keydown(frozenEvent)).not.toThrow();
+    expect(keydownSpy).toBeCalledWith({code: 'KeyA', coordinates: [0, 2, 1]});
+  });
 });

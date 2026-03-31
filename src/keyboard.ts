@@ -88,17 +88,20 @@ export class Keyboard {
   }
 
   private fireKeydown(event: CoordinateKeyboardEvent) {
-    event.coordinates = COORDS_BY_CODE.get(event.code);
+    const eventWithCoords: CoordinateKeyboardEvent = {
+      code: event.code,
+      coordinates: COORDS_BY_CODE.get(event.code),
+    };
     const keyupCallbacks = this.keyupCallbacks.get(event.code) || [];
     for (const callback of keyupCallbacks) {
       console.warn('Unresolved keyup detected');
       callback();
     }
     this.log(
-      `Firing keydown listeners with ${event.code} @ ${event.coordinates}`,
+      `Firing keydown listeners with ${event.code} @ ${eventWithCoords.coordinates}`,
     );
     this.keydownCallbacks.forEach(callback =>
-      keyupCallbacks.push(callback(event)),
+      keyupCallbacks.push(callback(eventWithCoords)),
     );
     this.keyupCallbacks.set(event.code, keyupCallbacks);
   }
@@ -123,7 +126,11 @@ export class Keyboard {
     }
     // The pending state isn't strictly necessary as we filter out repeated events,
     // but it's kept in case event.repeat isn't 100% reliable.
-    if (event.key === 'Shift') {
+    if (
+      event.key === 'Shift' ||
+      event.code === 'ShiftLeft' ||
+      event.code === 'ShiftRight'
+    ) {
       for (const code of this.activeKeys) {
         this.log(`Adding ${code} to pending state due to a 'Shift' press`);
         this.pendingKeys.add(code);
