@@ -3,7 +3,7 @@ Isomorphic coordinate-system for the QWERTY keyboard with sustain using the Shif
 
 ## Installation ##
 ```bash
-npm i
+npm install isomorphic-qwerty
 ```
 
 ## Documentation ##
@@ -13,6 +13,7 @@ To generate documentation locally run:
 ```bash
 npm run doc
 ```
+TypeDoc output is written to `./docs`.
 
 ## Coordinate system
 ### Z = 0
@@ -34,6 +35,11 @@ Cluster of keys containing Page Up/Down.
 
 ### Z = 3
 Numpad and associated keys.
+
+## API overview
+- `Keyboard` filters repeated keydown events, maps key codes to 3D coordinates, and supports Shift-based sustain.
+- `pianoMap()` projects a linear note sequence onto the QWERTY rows (layer `z = 1`).
+- `COORDS_BY_CODE` and `codeByCoords()` convert between `KeyboardEvent.code` values and physical-key coordinates.
 
 ## Example
 This example sets up a typical control flow. Press down keys on your QWERTY keyboard to see their coordinates logged in the console.
