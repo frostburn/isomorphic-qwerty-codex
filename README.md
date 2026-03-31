@@ -2,8 +2,14 @@
 Isomorphic coordinate-system for the QWERTY keyboard with sustain using the Shift key
 
 ## Installation ##
+### As a dependency
 ```bash
 npm install isomorphic-qwerty
+```
+
+### Local installation
+```bash
+npm i
 ```
 
 ## Documentation ##
