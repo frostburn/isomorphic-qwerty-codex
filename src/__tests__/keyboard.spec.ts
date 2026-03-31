@@ -60,4 +60,18 @@ describe('Isomoprhic QWERTY keyboard', () => {
     expect(onKeyupQ).toBeCalledTimes(1);
     expect(onKeyupW).toBeCalledTimes(1);
   });
+
+  it('does not remove a different listener when removing an unknown listener', () => {
+    const keyboard = new Keyboard();
+    const knownListener = vi.fn(() => vi.fn());
+    const unknownListener = vi.fn(() => vi.fn());
+
+    keyboard.addKeydownListener(knownListener);
+    keyboard.removeEventListener(unknownListener);
+
+    keyboard.keydown({code: 'KeyA'} as KeyboardEvent);
+
+    expect(knownListener).toBeCalledTimes(1);
+    expect(unknownListener).toBeCalledTimes(0);
+  });
 });

@@ -81,7 +81,10 @@ export class Keyboard {
    * @param listener Callback registered with {@link Keyboard.addKeydownListener}.
    */
   removeEventListener(listener: KeydownCallback) {
-    this.keydownCallbacks.splice(this.keydownCallbacks.indexOf(listener), 1);
+    const index = this.keydownCallbacks.indexOf(listener);
+    if (index >= 0) {
+      this.keydownCallbacks.splice(index, 1);
+    }
   }
 
   private fireKeydown(event: CoordinateKeyboardEvent) {
