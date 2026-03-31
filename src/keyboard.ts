@@ -100,9 +100,12 @@ export class Keyboard {
     this.log(
       `Firing keydown listeners with ${event.code} @ ${eventWithCoords.coordinates}`,
     );
-    this.keydownCallbacks.forEach(callback =>
-      keyupCallbacks.push(callback(eventWithCoords)),
-    );
+    this.keydownCallbacks.forEach(callback => {
+      const keyupCallback = callback(eventWithCoords);
+      if (typeof keyupCallback === 'function') {
+        keyupCallbacks.push(keyupCallback);
+      }
+    });
     this.keyupCallbacks.set(event.code, keyupCallbacks);
   }
 
@@ -139,7 +142,7 @@ export class Keyboard {
     }
 
     if (this.stickyKeys.has(event.code)) {
-      this.log(`Stricky toggle for ${event.code}`);
+      this.log(`Sticky toggle for ${event.code}`);
       this.activeKeys.delete(event.code);
       this.stickyKeys.delete(event.code);
       this.pendingKeys.delete(event.code);

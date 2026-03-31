@@ -88,4 +88,15 @@ describe('Isomoprhic QWERTY keyboard', () => {
   it('can be constructed with autobind in non-browser environments', () => {
     expect(() => new Keyboard(true)).not.toThrow();
   });
+
+  it('ignores non-function keyup handlers returned by listeners', () => {
+    const keyboard = new Keyboard();
+    const badListener = vi.fn(() => undefined) as unknown as (
+      event: CoordinateKeyboardEvent,
+    ) => () => void;
+    keyboard.addKeydownListener(badListener);
+
+    keyboard.keydown({code: 'KeyA'} as KeyboardEvent);
+    expect(() => keyboard.keyup({code: 'KeyA'} as KeyboardEvent)).not.toThrow();
+  });
 });
