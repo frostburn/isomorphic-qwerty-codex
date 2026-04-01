@@ -89,14 +89,15 @@ describe('Isomoprhic QWERTY keyboard', () => {
     expect(() => new Keyboard(true)).not.toThrow();
   });
 
-  it('ignores non-function keyup handlers returned by listeners', () => {
+  it('throws when listeners return non-function keyup handlers', () => {
     const keyboard = new Keyboard();
     const badListener = vi.fn(() => undefined) as unknown as (
       event: CoordinateKeyboardEvent,
     ) => () => void;
     keyboard.addKeydownListener(badListener);
 
-    keyboard.keydown({code: 'KeyA'} as KeyboardEvent);
-    expect(() => keyboard.keyup({code: 'KeyA'} as KeyboardEvent)).not.toThrow();
+    expect(() => keyboard.keydown({code: 'KeyA'} as KeyboardEvent)).toThrow(
+      TypeError,
+    );
   });
 });

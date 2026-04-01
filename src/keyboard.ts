@@ -102,9 +102,12 @@ export class Keyboard {
     );
     this.keydownCallbacks.forEach(callback => {
       const keyupCallback = callback(eventWithCoords);
-      if (typeof keyupCallback === 'function') {
-        keyupCallbacks.push(keyupCallback);
+      if (typeof keyupCallback !== 'function') {
+        throw new TypeError(
+          'Keyboard keydown listeners must return a keyup callback function.',
+        );
       }
+      keyupCallbacks.push(keyupCallback);
     });
     this.keyupCallbacks.set(event.code, keyupCallbacks);
   }
